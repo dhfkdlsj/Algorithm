@@ -11,7 +11,7 @@ for i in range(M):
   start = 0
   end = N - 1
   count = 0
-  while(start < end):
+  while(start <= end):
     mid = (start + end) // 2
     if A[i] > S[mid]:
       start = mid + 1
@@ -19,11 +19,6 @@ for i in range(M):
       end = mid - 1
     else:
       print(1, end=" ")
-      count = 1
       break
-  if count == 1:
-    continue
-  elif S[end] != A[i]:
+  if S[mid] != A[i]:
     print(0, end=" ")
-  else:
-    print(1, end=" ")
