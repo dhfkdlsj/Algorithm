@@ -8,6 +8,5 @@ answer = ''
 A, B = map(int, input().split())
 gcd = math.gcd(A, B)
 lcm = (A * B) // gcd
-answer += str(lcm) + '\n'
 
-print(answer)
+print(lcm)
