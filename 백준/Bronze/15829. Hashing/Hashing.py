@@ -2,11 +2,13 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-S = list(map(str,input()))
+S = input().strip()
 
 sum = 0
+mod = 1234567891
+r = 31
 
-for i in range(len(S)-1):
-    sum += ((ord(S[i])-96) * 31**i) % 1234567891
+for i in range(n):
+    sum = (sum + (ord(S[i]) - 96) * (r ** i) % mod) % mod
 
 print(sum)
