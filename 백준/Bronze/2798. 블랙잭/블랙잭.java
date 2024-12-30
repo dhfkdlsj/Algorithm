@@ -13,7 +13,6 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-
         arr = new int[N];
 
         st = new StringTokenizer(br.readLine());
@@ -22,20 +21,27 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        blackjack(0,0,0);
+        Arrays.sort(arr);
+
+        for (int i = 0; i < N - 2; i++) {
+            int left = i + 1;
+            int right = N - 1;
+
+            while (left < right) {
+                int sum = arr[i] + arr[left] + arr[right];
+                if (sum > M) {
+                    right--;
+                }
+                if (sum <= M) {
+                    maxSum = Math.max(maxSum, sum);
+                    left++;
+                }
+            }
+
+        }
+
         System.out.println(maxSum);
 
     }
 
-    private static void blackjack(int start, int cnt, int totalSum) {
-        if (cnt == 3) {
-            if (totalSum <= M){
-                maxSum = Math.max(maxSum, totalSum);
-            }
-            return;
-        }
-        for (int i = start; i < N; i++) {
-            blackjack(i+1, cnt+1, totalSum+arr[i]);
-        }
-    }
 }
