@@ -15,27 +15,14 @@ public class Main {
         if (n % 5 == 0)
             minSum = Math.min(minSum, n/5);
 
-        int a = n / 3;
-        for (int i = 1; i < a; i++) {
-            int sum = 3 * (a-i) + 5;
-            if (sum == n) {
-                minSum = Math.min(minSum, a-i+1);
-            }
-            int x = 0;
-            while (sum < n){
-                sum += 5;
-                x++;
-                if (sum == n) {
-                    minSum = Math.min(minSum, a-i+1+x);
-                    break;
-                }
+        for (int i = n / 3; i >= 0; i--) {
+            int remaining = n - 3 * i;
+            if (remaining % 5 == 0) {
+                minSum = Math.min(minSum, i + remaining / 5);
             }
         }
 
-        if (minSum == Integer.MAX_VALUE)
-            System.out.println(-1);
-        else
-            System.out.println(minSum);
+        System.out.println(minSum == Integer.MAX_VALUE ? -1 : minSum);
     }
 
 }
