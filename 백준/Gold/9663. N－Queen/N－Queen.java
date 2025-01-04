@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N,cnt,arr[];
+    static int N,cnt, board[];
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
-        arr = new int[N];
+        board = new int[N];
         cnt = 0;
         
         nqueen(0);
@@ -16,23 +16,23 @@ public class Main {
         System.out.println(cnt);
     }
 
-    private static void nqueen(int RowNo) {
-        if (notAvailable(RowNo-1)){
+    private static void nqueen(int row) {
+        if (notAvailable(row-1)){
             return;
         }
-        if (RowNo == N) {
+        if (row == N) {
             cnt++;
             return;
         }
         for (int i = 0; i < N; i++) {
-            arr[RowNo] = i;
-            nqueen(RowNo+1);
+            board[row] = i;
+            nqueen(row+1);
         }
     }
 
     private static boolean notAvailable(int RowNo) {
         for (int i = 0; i < RowNo; i++) {
-            if (arr[i] == arr[RowNo] || Math.abs(arr[i] - arr[RowNo]) == RowNo - i){
+            if (board[i] == board[RowNo] || Math.abs(board[i] - board[RowNo]) == RowNo - i){
                 return true;
             }
         }
@@ -40,3 +40,4 @@ public class Main {
     }
 
 }
+
