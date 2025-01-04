@@ -2,42 +2,41 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int N,ans,col[];  //index = i축, 안의 값, j축
-	
-	static boolean isAvailable(int rowNo) {
-		for(int j = 0; j<rowNo; j++) {
-			if(col[rowNo] == col[j] || 
-					Math.abs(col[rowNo] - col[j]) == rowNo-j) return false;
-		}
-		return true;
-	}
-	
-	static void nqueen(int rowNo) {
-		if(!isAvailable(rowNo-1)){
-			// 가지치기
-			return;
-		}
-		if(rowNo==N) {
-			ans++;
-			return;
-		}
-		for(int i=0; i<N; i++) {
-			col[rowNo]=i;
-//			if(isAvailable(rowNo)) nqueen(rowNo+1);
-			nqueen(rowNo+1);
-		}
-	}
-	public static void main(String[] args) throws Exception{
-		Scanner sc = new Scanner(System.in);
-		N = sc.nextInt();
-		col = new int[N];
-		ans =0;
-		nqueen(0);
-		
-		
-		System.out.println(ans);
-		
-		sc.close();
-	}
+    static int N,cnt,arr[];
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        arr = new int[N];
+        cnt = 0;
+        
+        nqueen(0);
+
+        System.out.println(cnt);
+    }
+
+    private static void nqueen(int RowNo) {
+        if (notAvailable(RowNo-1)){
+            return;
+        }
+        if (RowNo == N) {
+            cnt++;
+            return;
+        }
+        for (int i = 0; i < N; i++) {
+            arr[RowNo] = i;
+            nqueen(RowNo+1);
+        }
+    }
+
+    private static boolean notAvailable(int RowNo) {
+        for (int i = 0; i < RowNo; i++) {
+            if (arr[i] == arr[RowNo] || Math.abs(arr[i] - arr[RowNo]) == RowNo - i){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
