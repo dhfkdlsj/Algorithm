@@ -2,65 +2,63 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, min, max, total;
-    static int[] S, O, b;
-
-    static void back(int cnt, int index) {
-        if (cnt == N - 1) {
-            for(int i=0; i<N-1; i++){
-                switch(b[i]) {
-                        case 0:
-                            total += S[i+1];
-                            break;
-                        case 1:
-                            total -= S[i+1];
-                            break;
-                        case 2:
-                            total *= S[i+1];
-                            break;
-                        case 3:
-                            total /= S[i+1];
-                            break;
-                    }
-            }
-            max = Math.max(max,total);
-            min = Math.min(min,total);
-            total = S[0];
-            return;
-        }
-        for (int i = 0; i < 4; i++) {
-            if (O[i] > 0) {
-                O[i] -= 1;
-                b[index] = i;
-                back(cnt + 1, index + 1);
-                O[i]+=1;
-            }
-        }
-    }
+    static int N, min, max;
+    static int[] number;
+    static int[] operatorCount;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+
         N = Integer.parseInt(br.readLine());
-        S = new int[N];
-        O = new int[4];
-        b = new int[N - 1];
+        number = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            number[i] = Integer.parseInt(st.nextToken());
+        }
+
+        operatorCount = new int[4];
         st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < 4; i++) {
+            operatorCount[i] = Integer.parseInt(st.nextToken());
+        }
+
         min = Integer.MAX_VALUE;
         max = Integer.MIN_VALUE;
 
-        for (int i = 0; i < N; i++) {
-            S[i] = Integer.parseInt(st.nextToken());
-        }
+        calculate(1, number[0]);
 
-        st = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < 4; i++) {
-            O[i] = Integer.parseInt(st.nextToken());
-        }
-        total = S[0];
-        back(0, 0);
         System.out.println(max);
         System.out.println(min);
+    }
+
+    private static void calculate(int index, int currentResult) {
+        if (index == N) {
+            max = Math.max(max, currentResult);
+            min = Math.min(min, currentResult);
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if (operatorCount[i] > 0) {
+                operatorCount[i]--;
+
+                switch (i) {
+                    case 0: // Addition
+                        calculate(index + 1, currentResult + number[index]);
+                        break;
+                    case 1: // Subtraction
+                        calculate(index + 1, currentResult - number[index]);
+                        break;
+                    case 2: // Multiplication
+                        calculate(index + 1, currentResult * number[index]);
+                        break;
+                    case 3: // Division
+                        calculate(index + 1, currentResult / number[index]);
+                        break;
+                }
+
+                operatorCount[i]++;
+            }
+        }
     }
 }
