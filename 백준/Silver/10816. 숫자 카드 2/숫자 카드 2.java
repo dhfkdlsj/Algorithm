@@ -7,19 +7,20 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        Map<Integer, Integer> countMap = new HashMap<>();
+        int offset = 10_000_000; // 음수를 처리하기 위한 오프셋
+        int[] countArray = new int[20_000_001]; // -10,000,000 ~ 10,000,000
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             int num = Integer.parseInt(st.nextToken());
-            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+            countArray[num + offset]++;
         }
 
         int M = Integer.parseInt(br.readLine());
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
             int target = Integer.parseInt(st.nextToken());
-            sb.append(countMap.getOrDefault(target, 0)).append(" ");
+            sb.append(countArray[target + offset]).append(" ");
         }
 
         System.out.println(sb.toString().trim());
