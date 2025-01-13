@@ -2,55 +2,27 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-            int N = Integer.parseInt(br.readLine());
-            int[] sangeunArray = new int[N];
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        Map<Integer, Integer> countMap = new HashMap<>();
 
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < N; i++) {
-                sangeunArray[i] = Integer.parseInt(st.nextToken());
-            }
-
-            Arrays.sort(sangeunArray); // 이진 탐색을 위한 정렬
-
-            int M = Integer.parseInt(br.readLine());
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < M; i++) {
-                int target = Integer.parseInt(st.nextToken());
-                int count = upperBound(sangeunArray, target) - lowerBound(sangeunArray, target);
-                bw.write(count + " ");
-            }
+        for (int i = 0; i < N; i++) {
+            int num = Integer.parseInt(st.nextToken());
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
         }
-    }
 
-    private static int lowerBound(int[] array, int target) {
-        int left = 0;
-        int right = array.length;
-        while (left < right) {
-            int middle = (left + right) / 2;
-            if (target <= array[middle]) {
-                right = middle;
-            } else {
-                left = middle + 1;
-            }
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            int target = Integer.parseInt(st.nextToken());
+            sb.append(countMap.getOrDefault(target, 0)).append(" ");
         }
-        return left;
-    }
 
-    private static int upperBound(int[] array, int target) {
-        int left = 0;
-        int right = array.length;
-        while (left < right) {
-            int middle = (left + right) / 2;
-            if (target < array[middle]) {
-                right = middle;
-            } else {
-                left = middle + 1;
-            }
-        }
-        return left;
+        System.out.println(sb.toString().trim());
+        br.close();
     }
 }
