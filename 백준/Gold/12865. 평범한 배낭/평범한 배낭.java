@@ -1,31 +1,34 @@
 import java.io.*;
 import java.util.*;
-
 public class Main {
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	public static void main(String[] args) throws Exception {
-		Scanner sc = new Scanner(System.in);
-		int N = sc.nextInt();
-		int K = sc.nextInt();
-		int[] weights = new int[N+1];
-		int[] profits = new int[N+1];
-		
-		for(int i=0; i<N; i++) {
-			weights[i] = sc.nextInt();
-			profits[i] = sc.nextInt();
-		}
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
 
-		int[] dp = new int[K+1];
+        int[] weights = new int[N+1];
+        int[] profits = new int[N+1];
+        
+        for (int i=0; i<N; i++) {
+            st = new StringTokenizer(br.readLine());
+            weights[i] = Integer.parseInt(st.nextToken());
+            profits[i] = Integer.parseInt(st.nextToken());
+        }
+        
+        int[] dp = new int[K+1];
+        
+        for (int i=0; i<N; i++){
+            for (int w=K; w>=1; w--) {
+                if (weights[i]<=w) {
+                    dp[w] = Math.max(dp[w],profits[i]+dp[w-weights[i]]);
+                }
+            }
+        }
 
-		for(int i=0; i<N; i++) {  
-			for(int w=K; w>=1; w--) {
-				if(weights[i]<=w) {
-					dp[w] = Math.max(dp[w],profits[i]+dp[w-weights[i]]);
-				}
-			}
-		}
-		System.out.println(dp[K]);
-		sc.close();
-	}
+        System.out.println(dp[K]);
+        br.close();
 
+    }
 }
