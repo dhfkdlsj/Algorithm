@@ -1,53 +1,60 @@
-import java.awt.Point;
 import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int R, C, result;
-	static int[][] S;
-	static boolean[][] v;
-	static int[] dx = {-1,1,0,0}, dy = {0,0,-1,1};
-	static Point p = new Point(); 
-	
-	public static void main(String[] args) throws Exception{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		R = Integer.parseInt(st.nextToken());
-		C = Integer.parseInt(st.nextToken());
-		v = new boolean[R][C];
-		
-		S = new int[R][C];
-		
-		for(int i=0; i<R; i++) {
-			String str = br.readLine();
-			for(int j=0; j<C; j++) {
-				S[i][j] = str.charAt(j)-48;
-			}
-		}
-		result = myhome(0,0);
-		System.out.println(result);
-	}
+    static int N, M;
+    static int[][] maze;
+    static int[][] dist;
+    static boolean[][] visited;
+    
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	static int myhome(int x, int y) {
-		Deque<Point> dq = new ArrayDeque<>();
-		dq.add(new Point(x,y));
-		v[x][y] = true;
-		while(!dq.isEmpty()) {
-			Point w = dq.poll();
-			for (int i=0; i<4; i++) {
-				int xx = w.x+dx[i];
-				int yy = w.y+dy[i];
-				if(xx >=0 && yy>=0 && xx<R && yy <C && !v[xx][yy]&& S[xx][yy] != 0) {
-					dq.add(new Point(xx,yy));
-					v[xx][yy] = true;
-					S[xx][yy] = S[w.x][w.y] + 1;
-					 if (xx == R - 1 && yy == C - 1) {
-	                        return S[xx][yy];
-	                    }
-				}
-		}
-}	return -1;
-}
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        maze = new int[N][M];
+        dist = new int[N][M];
+        visited = new boolean[N][M];
+
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < M; j++) {
+                maze[i][j] = line.charAt(j) - '0';
+            }
+        }
+
+        bfs(0, 0);
+
+        System.out.println(dist[N - 1][M - 1]);
+    }
+
+    static void bfs(int x, int y) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{x, y});
+        visited[x][y] = true;
+        dist[x][y] = 1;
+
+        while (!queue.isEmpty()) {
+            int[] now = queue.poll();
+            int curX = now[0], curY = now[1];
+
+            for (int i = 0; i < 4; i++) {
+                int nx = curX + dx[i];
+                int ny = curY + dy[i];
+
+                if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+
+                if (!visited[nx][ny] && maze[nx][ny] == 1) {
+                    visited[nx][ny] = true;
+                    dist[nx][ny] = dist[curX][curY] + 1;
+                    queue.offer(new int[]{nx, ny});
+                }
+            }
+        }
+    }
 }
