@@ -19,10 +19,17 @@ public class Main {
     private static long pow(long base, long exp, int mod) {  // base - 밑, exponent - 제곱수...
         long result = 1;
         while (exp > 0) {
-            if (exp % 2 == 1) result = (result * base) % mod;
-            base = (base * base) % mod;
-            exp /= 2;
+            // 홀수 지수일 경우
+            if (exp % 2 == 1) {
+                result = (result * base) % mod;  // base를 한 번 더 곱함
+                exp--;  // 지수를 1 감소시켜 홀수를 짝수로 만듦
+            }
+
+            // 짝수 지수일 경우
+            base = (base * base) % mod;  // base를 두 번 곱함
+            exp /= 2;  // 지수를 반으로 줄임
         }
+
         return result;
     }
 }
